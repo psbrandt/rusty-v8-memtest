@@ -7,3 +7,4 @@ edition = "2021"
 
 [dependencies]
 deno_core = "0.222.0"
+jemallocator = "0.5.4"
