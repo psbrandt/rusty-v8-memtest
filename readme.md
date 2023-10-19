@@ -46,3 +46,65 @@ $  valgrind --tool=dhat --dhat-out-file=dhat-master.json ./target/debug/rusty-v8
 ```
 
 See the DHAT viewer results as PDF [here](./dhat-output/master/dhat-master.pdf).
+
+### `master` without WASM
+
+```
+GN_ARGS="v8_enable_webassembly=false" V8_FROM_SOURCE=1 cargo build -vv
+```
+
+```
+$ valgrind --tool=dhat --dhat-out-file=dhat-no-wasm.json ./target/debug/rusty-v8-memtest
+==29611== DHAT, a dynamic heap analysis tool
+==29611== Copyright (C) 2010-2018, and GNU GPL'd, by Mozilla Foundation
+==29611== Using Valgrind-3.19.0 and LibVEX; rerun with -h for copyright info
+==29611== Command: ./target/debug/rusty-v8-memtest
+==29611==
+Error: unrecognized flag --wasm-test-streaming
+The remaining arguments were ignored: --harmony-import-assertions --harmony-import-attributes --no-validate-asm --turbo_fast_api_calls --harmony-change-array-by-copy
+Try --help for options
+==29611==
+==29611== Total:     3,628,306 bytes in 9,378 blocks
+==29611== At t-gmax: 853,363 bytes in 1,294 blocks
+==29611== At t-end:  18,789 bytes in 553 blocks
+==29611== Reads:     34,087,294 bytes
+==29611== Writes:    24,618,078 bytes
+==29611==
+==29611== To view the resulting profile, open
+==29611==   file:///usr/libexec/valgrind/dh_view.html
+==29611== in a web browser, click on "Load...", and then select the file
+==29611==   /opt/rusty-v8-memtest/dhat-no-wasm.json
+==29611== The text at the bottom explains the abbreviations used in the output.
+```
+
+
+### `jemalloc`
+
+The code in the `jemalloc` branch is as follows:
+
+
+```
+```
+
+The DHAT output is:
+
+```
+$ valgrind --tool=dhat --dhat-out-file=dhat-jemalloc.json ./target/debug/rusty-v8-memtest
+==24968== DHAT, a dynamic heap analysis tool
+==24968== Copyright (C) 2010-2018, and GNU GPL'd, by Mozilla Foundation
+==24968== Using Valgrind-3.19.0 and LibVEX; rerun with -h for copyright info
+==24968== Command: ./target/debug/rusty-v8-memtest
+==24968==
+==24968==
+==24968== Total:     2,708,886 bytes in 2,890 blocks
+==24968== At t-gmax: 639,278 bytes in 1,034 blocks
+==24968== At t-end:  33,909 bytes in 657 blocks
+==24968== Reads:     11,190,119 bytes
+==24968== Writes:    3,589,676 bytes
+==24968==
+==24968== To view the resulting profile, open
+==24968==   file:///usr/libexec/valgrind/dh_view.html
+==24968== in a web browser, click on "Load...", and then select the file
+==24968==   /opt/rusty-v8-memtest/dhat-jemalloc.json
+==24968== The text at the bottom explains the abbreviations used in the output.
+```
