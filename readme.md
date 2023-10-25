@@ -158,3 +158,50 @@ Try --help for options
 ```
 
 [DHAT viewer output](./dhat-output/jemalloc-no-wasm/dhat-jemalloc-no-wasm.pdf)
+
+
+### With Dispose
+
+Running `dispose` and `dispose_platform` manually seems to help. The following code:
+
+
+```rust
+fn main() {
+
+    deno_core::JsRuntime::new(deno_core::RuntimeOptions::default());
+
+    unsafe {
+        v8::V8::dispose(); 
+    }
+
+    v8::V8::dispose_platform();
+}
+```
+
+Gives:
+
+```
+$ valgrind --tool=dhat --dhat-out-file=dhat-with-dispose.json ./target/debug/rusty-v8-memtest
+==3196== DHAT, a dynamic heap analysis tool
+==3196== Copyright (C) 2010-2018, and GNU GPL'd, by Mozilla Foundation
+==3196== Using Valgrind-3.19.0 and LibVEX; rerun with -h for copyright info
+==3196== Command: ./target/debug/rusty-v8-memtest
+==3196==
+==3196==
+==3196== Total:     2,766,643 bytes in 3,129 blocks
+==3196== At t-gmax: 664,107 bytes in 1,134 blocks
+==3196== At t-end:  6,970 bytes in 47 blocks
+==3196== Reads:     11,242,267 bytes
+==3196== Writes:    3,645,139 bytes
+==3196==
+==3196== To view the resulting profile, open
+==3196==   file:///usr/libexec/valgrind/dh_view.html
+==3196== in a web browser, click on "Load...", and then select the file
+==3196==   /opt/rusty-v8-memtest/dhat-with-dispose.json
+==3196== The text at the bottom explains the abbreviations used in the output.
+```
+
+[DHAT viewer](./dhat-output/with-dispose/dhat-with-dispose.pdf)
+
+
+

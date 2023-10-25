@@ -729,6 +729,7 @@ name = "rusty-v8-memtest"
 version = "0.1.0"
 dependencies = [
  "deno_core",
+ "v8",
 ]
 
 [[package]]
